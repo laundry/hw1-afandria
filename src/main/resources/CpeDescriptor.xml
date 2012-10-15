@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cpeDescription xmlns="http://uima.apache.org/resourceSpecifier">
+	<collectionReader>
+		<collectionIterator>
+			<descriptor>
+				<import location="../java/GeneAnnotationCollectionReaderDescriptor.xml" />
+			</descriptor>
+			<configurationParameterSettings>
+			</configurationParameterSettings>
+		</collectionIterator>
+	</collectionReader>
+	<casProcessors casPoolSize="1" processingUnitThreadCount="1">
+		<casProcessor deployment="integrated" name="NoOpAnnotator">
+			<descriptor>
+				<import location="../java/NoOpAnalysisEngineDescriptor.xml" />
+			</descriptor>
+			<deploymentParameters />
+			<errorHandling>
+				<errorRateThreshold action="terminate" value="100/1000" />
+				<maxConsecutiveRestarts action="terminate" value="30" />
+				<timeout max="100000" />
+			</errorHandling>
+			<checkpoint batch="100" time="1000ms" />
+		</casProcessor>
+	</casProcessors>
+	<cpeConfig>
+		<numToProcess>1000</numToProcess>
+		<deployAs>immediate</deployAs>
+		<checkpoint time="3000ms" />
+		<timerImpl>
+			org.apache.uima.reference_impl.util.JavaTimer
+		</timerImpl>
+	</cpeConfig>
+</cpeDescription>
