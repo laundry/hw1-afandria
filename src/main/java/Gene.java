@@ -10,8 +10,8 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Mon Oct 15 03:01:44 EDT 2012
- * XML source: C:/scratch/eclipse_workspace/hw1-afandria/src/main/java/GeneAnnotationCollectionReaderDescriptor.xml
+ * Updated by JCasGen Tue Oct 16 10:58:53 EDT 2012
+ * XML source: C:/scratch/eclipse_workspace/hw1-afandria/src/main/java/GeneAnnotationTypeSystemDescriptor.xml
  * @generated */
 public class Gene extends Annotation {
   /** @generated

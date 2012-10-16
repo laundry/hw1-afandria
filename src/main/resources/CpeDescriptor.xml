@@ -3,28 +3,33 @@
 	<collectionReader>
 		<collectionIterator>
 			<descriptor>
-				<import location="../java/GeneAnnotationCollectionReaderDescriptor.xml" />
+				<import location="GeneAnnotationCollectionReaderDescriptor.xml" />
 			</descriptor>
 			<configurationParameterSettings>
+				<nameValuePair>
+					<name>InputFilePath</name>
+					<value><string>"C:\scratch\eclipse_workspace\hw1-afandria\src\main\resources\data\sample.in"</string></value>
+				</nameValuePair>
 			</configurationParameterSettings>
 		</collectionIterator>
 	</collectionReader>
 	<casProcessors casPoolSize="1" processingUnitThreadCount="1">
 		<casProcessor deployment="integrated" name="NoOpAnnotator">
 			<descriptor>
-				<import location="../java/NoOpAnalysisEngineDescriptor.xml" />
+				<import location="NoOpAnalysisEngineDescriptor.xml" />
 			</descriptor>
+			<filter />
 			<deploymentParameters />
 			<errorHandling>
 				<errorRateThreshold action="terminate" value="100/1000" />
-				<maxConsecutiveRestarts action="terminate" value="30" />
+				<maxConsecutiveRestarts action="terminate" value="3" />
 				<timeout max="100000" />
 			</errorHandling>
-			<checkpoint batch="100" time="1000ms" />
+			<checkpoint batch="9001" />
 		</casProcessor>
 	</casProcessors>
 	<cpeConfig>
-		<numToProcess>1000</numToProcess>
+		<numToProcess>1</numToProcess>
 		<deployAs>immediate</deployAs>
 		<checkpoint time="3000ms" />
 		<timerImpl>
