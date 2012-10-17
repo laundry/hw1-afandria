@@ -15,8 +15,14 @@ import org.apache.uima.util.FileUtils;
 
 public class CmuDictAnnotator extends JCasAnnotator_ImplBase {
 
+  /**
+   * Debug flag to toggle print statements.
+   */
   private static boolean DEBUG = false;
 
+  /**
+   * This is where CMUDict is (default)
+   */
   private static String DICT_PATH = "src/main/resources/data/cmudict.0.7a.txt";
 
   private Set<String> getDictionary() throws AnalysisEngineProcessException {
@@ -35,6 +41,12 @@ public class CmuDictAnnotator extends JCasAnnotator_ImplBase {
     return dictionary;
   }
 
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.apache.uima.analysis_component.JCasAnnotator_ImplBase#process(org.apache.uima.jcas.JCas)
+   */
   @Override
   public void process(JCas arg0) throws AnalysisEngineProcessException {
     if (DEBUG)
@@ -48,6 +60,10 @@ public class CmuDictAnnotator extends JCasAnnotator_ImplBase {
     Iterator<Annotation> annotationIterator = annotations.iterator();
     while (annotationIterator.hasNext()) {
       Gene a = (Gene) annotationIterator.next();
+      // decrement confidence if it has some invalid characters
+      if (a.getContent().contains("%") || a.getContent().contains("@")) {
+        a.setConfidence(a.getConfidence() - 3);
+      }
       // increment confidence if it's just one letter
       if (a.getContent().length() == 1) {
         a.setConfidence(a.getConfidence() + 1);
@@ -56,9 +72,13 @@ public class CmuDictAnnotator extends JCasAnnotator_ImplBase {
       // decrement confidence if in CMUDict
       if (dictionary.contains(a.getContent().toUpperCase())) {
         a.setConfidence(a.getConfidence() - 2);
-      } else if (dictionary.contains(a.getContent().split(" ")[0].toUpperCase())) {
-        // decrement confidence if first word is in CMUDict
-        a.setConfidence(a.getConfidence() - 1);
+      } else {
+        if (dictionary.contains(a.getContent().split(" ")[0].toUpperCase())) {
+          // decrement confidence if first word is in CMUDict
+          a.setConfidence(a.getConfidence() - 1);
+        } else {
+          a.setConfidence(a.getConfidence() + 1);
+        }
       }
       // increment confidence if all words are not in CMUDict
       String[] words = a.getContent().split(" ");
@@ -68,6 +88,8 @@ public class CmuDictAnnotator extends JCasAnnotator_ImplBase {
       }
       if (!dictionary.containsAll(wordCollection)) {
         a.setConfidence(a.getConfidence() + 1);
+      } else {
+        a.setConfidence(a.getConfidence() - 1);
       }
       if (DEBUG)
         System.out.println(a.getConfidence() + " " + a.getContent());

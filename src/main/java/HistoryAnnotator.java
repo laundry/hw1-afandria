@@ -11,12 +11,34 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.util.FileUtils;
 
+/**
+ * Filters current annotations (Gene's) and promotes their scores if they existed in our sample set.
+ * 
+ * @author afandria
+ */
 public class HistoryAnnotator extends JCasAnnotator_ImplBase {
 
+  /**
+   * Debug flag to toggle print statements.
+   */
   private static boolean DEBUG = false;
 
+  /**
+   * score to increase by if found in history
+   */
+  private static int HISTORY_BONUS = 5;
+
+  /**
+   * where our history is stored (default)
+   */
   private static String DICT_PATH = "src/main/resources/data/sample.out";
 
+  /**
+   * Retrieves a set of gold standard gene mentions and stores them in a set
+   * 
+   * @return Set of strings contained by history in DICT_PATH
+   * @throws AnalysisEngineProcessException
+   */
   private Set<String> getDictionary() throws AnalysisEngineProcessException {
     Set<String> dictionary = new HashSet<String>();
     try {
@@ -33,6 +55,12 @@ public class HistoryAnnotator extends JCasAnnotator_ImplBase {
     return dictionary;
   }
 
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.apache.uima.analysis_component.JCasAnnotator_ImplBase#process(org.apache.uima.jcas.JCas)
+   */
   @Override
   public void process(JCas arg0) throws AnalysisEngineProcessException {
     if (DEBUG)
@@ -46,7 +74,7 @@ public class HistoryAnnotator extends JCasAnnotator_ImplBase {
       Gene a = (Gene) annotationIterator.next();
       // increment confidence if it's in the history
       if (dictionary.contains(a.getContent())) {
-        a.setConfidence(a.getConfidence() + 5);
+        a.setConfidence(a.getConfidence() + HISTORY_BONUS);
       }
       if (DEBUG)
         System.out.println(a.getConfidence() + " " + a.getContent());

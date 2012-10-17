@@ -13,10 +13,30 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceProcessException;
 
+/**
+ * Prints pipeline Gene annotations to the first of the following that work: config specified file,
+ * default file OUTPUT_PATH, standard out.
+ * 
+ * @author afandria
+ * 
+ */
 public class AnnotationPrinter extends CasConsumer_ImplBase implements CasObjectProcessor {
 
-  private static boolean DEBUG = true;
+  /**
+   * Debug flag to toggle print statements.
+   */
+  private static boolean DEBUG = false;
 
+  /**
+   * This is where we will write our output (default)
+   */
+  private static String OUTPUT_PATH = "src/main/resources/data/hw1.out";
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.apache.uima.collection.base_cpm.CasObjectProcessor#processCas(org.apache.uima.cas.CAS)
+   */
   @SuppressWarnings("deprecation")
   @Override
   public void processCas(CAS arg0) throws ResourceProcessException {
@@ -29,7 +49,7 @@ public class AnnotationPrinter extends CasConsumer_ImplBase implements CasObject
     // TODO get actual config
     String fp = (String) getConfigParameterValue("OutputFilePath");
     if (fp == null)
-      fp = "src/main/resources/data/hw1.out";
+      fp = OUTPUT_PATH;
     Writer fw = new OutputStreamWriter(System.out);
     try {
       fw = new FileWriter(fp);
@@ -43,7 +63,7 @@ public class AnnotationPrinter extends CasConsumer_ImplBase implements CasObject
     Iterator<Annotation> annotationIterator = annotations.iterator();
     while (annotationIterator.hasNext()) {
       Gene g = (Gene) annotationIterator.next();
-      if (g.getConfidence() >= 4) {
+      if (g.getConfidence() >= 3) {
         // TODO (afandria): StringBuilders are so ugly. Is there another way?
         StringBuilder lineBuilder = new StringBuilder();
         lineBuilder.append(g.getIdentifier());
@@ -65,5 +85,4 @@ public class AnnotationPrinter extends CasConsumer_ImplBase implements CasObject
       }
     }
   }
-
 }

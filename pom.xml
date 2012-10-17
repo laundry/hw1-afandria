@@ -109,6 +109,16 @@
     	<artifactId>cmudict04</artifactId>
     	<version>1.0</version>
     </dependency>
+    <dependency>
+    	<groupId>com.aliasi</groupId>
+    	<artifactId>lingpipe</artifactId>
+    	<version>4.1.0</version>
+    </dependency>
+    <dependency>
+    	<groupId>commons-logging</groupId>
+    	<artifactId>commons-logging</artifactId>
+    	<version>1.0.4</version>
+    </dependency>
   </dependencies>
   <scm>
   	<developerConnection>scm:git:git@github.com:laundry/hw1-afandria.git</developerConnection>

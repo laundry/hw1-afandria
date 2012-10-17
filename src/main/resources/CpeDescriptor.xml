@@ -13,10 +13,23 @@
 			</configurationParameterSettings>
 		</collectionIterator>
 	</collectionReader>
-	<casProcessors casPoolSize="4" processingUnitThreadCount="1">
+	<casProcessors casPoolSize="9" processingUnitThreadCount="1">
 		<casProcessor deployment="integrated" name="NoOpAnnotator">
 			<descriptor>
 				<import location="NoOpAnalysisEngineDescriptor.xml" />
+			</descriptor>
+			<filter />
+			<deploymentParameters />
+			<errorHandling>
+				<errorRateThreshold action="terminate" value="100/1000" />
+				<maxConsecutiveRestarts action="terminate" value="3" />
+				<timeout max="100000" />
+			</errorHandling>
+			<checkpoint batch="1" />
+		</casProcessor>	
+		<casProcessor deployment="integrated" name="PostNoOpAnnotationEvaluation">
+			<descriptor>
+				<import location="GeneAnnotationEvaluationCasConsumerDescriptor.xml" />
 			</descriptor>
 			<filter />
 			<deploymentParameters />
@@ -40,6 +53,19 @@
 			</errorHandling>
 			<checkpoint batch="2" />
 		</casProcessor>
+		<casProcessor deployment="integrated" name="PostNNPAnnotationEvaluation">
+			<descriptor>
+				<import location="GeneAnnotationEvaluationCasConsumerDescriptor.xml" />
+			</descriptor>
+			<filter />
+			<deploymentParameters />
+			<errorHandling>
+				<errorRateThreshold action="terminate" value="100/1000" />
+				<maxConsecutiveRestarts action="terminate" value="3" />
+				<timeout max="100000" />
+			</errorHandling>
+			<checkpoint batch="2" />
+		</casProcessor>
 		<casProcessor deployment="integrated" name="CmuDictAnnotator">
 			<descriptor>
 				<import location="CmuDictAnalysisEngineDescriptor.xml" />
@@ -52,6 +78,19 @@
 				<timeout max="100000" />
 			</errorHandling>
 			<checkpoint batch="3" />
+		</casProcessor>
+		<casProcessor deployment="integrated" name="PostCmuDictAnnotationEvaluation">
+			<descriptor>
+				<import location="GeneAnnotationEvaluationCasConsumerDescriptor.xml" />
+			</descriptor>
+			<filter />
+			<deploymentParameters />
+			<errorHandling>
+				<errorRateThreshold action="terminate" value="100/1000" />
+				<maxConsecutiveRestarts action="terminate" value="3" />
+				<timeout max="100000" />
+			</errorHandling>
+			<checkpoint batch="4" />
 		</casProcessor>
 		<casProcessor deployment="integrated" name="HistoryAnnotator">
 			<descriptor>
@@ -66,6 +105,19 @@
 			</errorHandling>
 			<checkpoint batch="4" />
 		</casProcessor>
+		<casProcessor deployment="integrated" name="PostHistoryAnnotationEvaluation">
+			<descriptor>
+				<import location="GeneAnnotationEvaluationCasConsumerDescriptor.xml" />
+			</descriptor>
+			<filter />
+			<deploymentParameters />
+			<errorHandling>
+				<errorRateThreshold action="terminate" value="100/1000" />
+				<maxConsecutiveRestarts action="terminate" value="3" />
+				<timeout max="100000" />
+			</errorHandling>
+			<checkpoint batch="5" />
+		</casProcessor>
 		<casProcessor deployment="integrated" name="AnnotationPrinter">
 			<descriptor>
 				<import location="GeneAnnotationPrintCasConsumerDescriptor.xml" />
@@ -77,7 +129,7 @@
 				<maxConsecutiveRestarts action="terminate" value="3" />
 				<timeout max="100000" />
 			</errorHandling>
-			<checkpoint batch="5" />
+			<checkpoint batch="6" />
 		</casProcessor>
 	</casProcessors>
 	<cpeConfig>
