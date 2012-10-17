@@ -1,5 +1,4 @@
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 
 import org.apache.uima.cas.CAS;
@@ -23,16 +22,16 @@ public class CollectionReader extends CollectionReader_ImplBase {
   @Override
   public void getNext(CAS arg0) throws IOException, CollectionException {
     JCas jcas;
-    String fp;
     try {
       jcas = arg0.getJCas();
-      fp = (String)getConfigParameterValue("InputFilePath");
-      // TODO get actual config
-      if (fp == null) fp = "src/main/resources/data/hw1.in";
+
     } catch (CASException e) {
       throw new CollectionException();
     }
-    
+    // TODO get actual config
+    String fp = (String) getConfigParameterValue("InputFilePath");
+    if (fp == null)
+      fp = "src/main/resources/data/hw1.in";
     File f = new File(fp);
     jcas.setDocumentText(FileUtils.file2String(f, "UTF-8"));
     read = true;

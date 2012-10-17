@@ -13,7 +13,7 @@
 			</configurationParameterSettings>
 		</collectionIterator>
 	</collectionReader>
-	<casProcessors casPoolSize="3" processingUnitThreadCount="2">
+	<casProcessors casPoolSize="4" processingUnitThreadCount="1">
 		<casProcessor deployment="integrated" name="NoOpAnnotator">
 			<descriptor>
 				<import location="NoOpAnalysisEngineDescriptor.xml" />
@@ -25,7 +25,7 @@
 				<maxConsecutiveRestarts action="terminate" value="3" />
 				<timeout max="100000" />
 			</errorHandling>
-			<checkpoint batch="9001" />
+			<checkpoint batch="1" />
 		</casProcessor>
 		<casProcessor deployment="integrated" name="NNPAnnotator">
 			<descriptor>
@@ -38,7 +38,7 @@
 				<maxConsecutiveRestarts action="terminate" value="3" />
 				<timeout max="100000" />
 			</errorHandling>
-			<checkpoint batch="9001" />
+			<checkpoint batch="2" />
 		</casProcessor>
 		<casProcessor deployment="integrated" name="CmuDictAnnotator">
 			<descriptor>
@@ -51,7 +51,33 @@
 				<maxConsecutiveRestarts action="terminate" value="3" />
 				<timeout max="100000" />
 			</errorHandling>
-			<checkpoint batch="9001" />
+			<checkpoint batch="3" />
+		</casProcessor>
+		<casProcessor deployment="integrated" name="HistoryAnnotator">
+			<descriptor>
+				<import location="HistoryAnalysisEngineDescriptor.xml" />
+			</descriptor>
+			<filter />
+			<deploymentParameters />
+			<errorHandling>
+				<errorRateThreshold action="terminate" value="100/1000" />
+				<maxConsecutiveRestarts action="terminate" value="3" />
+				<timeout max="100000" />
+			</errorHandling>
+			<checkpoint batch="4" />
+		</casProcessor>
+		<casProcessor deployment="integrated" name="AnnotationPrinter">
+			<descriptor>
+				<import location="GeneAnnotationPrintCasConsumerDescriptor.xml" />
+			</descriptor>
+			<filter />
+			<deploymentParameters />
+			<errorHandling>
+				<errorRateThreshold action="terminate" value="100/1000" />
+				<maxConsecutiveRestarts action="terminate" value="3" />
+				<timeout max="100000" />
+			</errorHandling>
+			<checkpoint batch="5" />
 		</casProcessor>
 	</casProcessors>
 	<cpeConfig>
