@@ -1,11 +1,13 @@
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.cas.FeatureStructure;
+import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 
 /**
@@ -24,31 +26,15 @@ public class NNPAnnotator extends JCasAnnotator_ImplBase {
   /**
    * How much score/confidence to give for all named entities recognized
    */
-  private static int DEFAULT_SCORE = 3;
+  private static int DEFAULT_SCORE = 6;
 
   /**
-   * Retrieve sentences formatted per sample.in from a string representing the entire document to be
-   * annotated
+   * Iterates through sentences and passes them to the NER, extracting gene mentions. From here, we
+   * will add them to the CAS' annotation list. Each gene mention will receive the DEFAULT_SCORE.
    * 
-   * @param document
-   * @return Map from sentence identifiers to sentence contents
-   */
-  private Map<String, String> getSentences(String document) {
-    String[] lines = document.split("\\n");
-    Map<String, String> sentences = new TreeMap<String, String>();
-    for (int i = 0; i < lines.length; i++) {
-      // TODO (afandria): this is pretty ugly Java; find a more succinct way to say the following
-      sentences.put(lines[i].substring(0, lines[i].indexOf(' ')),
-              lines[i].substring(lines[i].indexOf(' ') + 1));
-    }
-    return sentences;
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see
-   * org.apache.uima.analysis_component.JCasAnnotator_ImplBase#process(org.apache.uima.jcas.JCas)
+   * @param arg0
+   *          JCas
+   * @throws AnalysisEngineProcessException
    */
   @Override
   public void process(JCas arg0) throws AnalysisEngineProcessException {
@@ -60,7 +46,10 @@ public class NNPAnnotator extends JCasAnnotator_ImplBase {
     } catch (ResourceInitializationException e) {
       throw new AnalysisEngineProcessException();
     }
-    Map<String, String> sentences = getSentences(arg0.getDocumentText());
+    // get annotations
+    AnnotationIndex<Annotation> annotations = arg0.getAnnotationIndex(Gene.type);
+    // get sentences
+    Map<String, String> sentences = AnnotationUtilities.getSentences(arg0.getDocumentText());
     Iterator<String> keyIterator = sentences.keySet().iterator();
     while (keyIterator.hasNext()) {
       String k = keyIterator.next();
@@ -71,11 +60,13 @@ public class NNPAnnotator extends JCasAnnotator_ImplBase {
         // TODO (afandria): this is also pretty ugly Java; find a more succinct way to say the
         // following
         Integer normalizedBegin = me.getKey()
-                - sentences.get(k).substring(0, me.getKey()).split(" ").length;
+                - AnnotationUtilities.getSpaces(sentences.get(k).substring(0, me.getKey()));
         if (normalizedBegin < 0)
           normalizedBegin = 0;
         Integer normalizedEnd = me.getValue()
-                - sentences.get(k).substring(0, me.getValue()).split(" ").length;
+                - AnnotationUtilities.getSpaces(sentences.get(k).substring(0, me.getValue())) - 1;
+        if (me.getKey() == me.getValue())
+          normalizedEnd = normalizedBegin;
         // add everything to the index
         Gene g = new Gene(arg0);
         g.setBegin(normalizedBegin);
@@ -83,12 +74,11 @@ public class NNPAnnotator extends JCasAnnotator_ImplBase {
         g.setContent(sentences.get(k).substring(me.getKey(), me.getValue()));
         g.setIdentifier(k);
         g.setConfidence(DEFAULT_SCORE);
-        g.addToIndexes();
+        if (!annotations.contains((FeatureStructure) g))
+          g.addToIndexes();
         if (DEBUG)
           System.out.println(sentences.get(k).substring(me.getKey(), me.getValue()));
       }
     }
-    // evaluate
   }
-
 }

@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.collection.CollectionException;
@@ -12,7 +13,7 @@ import org.apache.uima.util.Progress;
 
 /**
  * @author afandria
- *
+ * 
  */
 public class CollectionReader extends CollectionReader_ImplBase {
 
@@ -22,7 +23,8 @@ public class CollectionReader extends CollectionReader_ImplBase {
   private static boolean DEBUG = false;
 
   /**
-   * Flag indicating whether or not we have read the singular input file. False if specified file DNE.
+   * Flag indicating whether or not we have read the singular input file. False if specified file
+   * DNE.
    */
   private boolean read;
 
@@ -31,7 +33,9 @@ public class CollectionReader extends CollectionReader_ImplBase {
    */
   private static String INPUT_PATH = "src/main/resources/data/hw1.in";
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.apache.uima.collection.CollectionReader_ImplBase#initialize()
    */
   public void initialize() throws ResourceInitializationException {
@@ -40,8 +44,12 @@ public class CollectionReader extends CollectionReader_ImplBase {
     read = false;
   }
 
-  /* (non-Javadoc)
-   * @see org.apache.uima.collection.CollectionReader#getNext(org.apache.uima.cas.CAS)
+  /**
+   * Gets the only document in this case.
+   * 
+   * @param arg0
+   *          CAS
+   * @throws AnalysisEngineProcessException
    */
   @Override
   public void getNext(CAS arg0) throws IOException, CollectionException {
@@ -62,7 +70,9 @@ public class CollectionReader extends CollectionReader_ImplBase {
 
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.apache.uima.collection.base_cpm.BaseCollectionReader#close()
    */
   @Override
@@ -71,7 +81,9 @@ public class CollectionReader extends CollectionReader_ImplBase {
       System.out.println("Closing");
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.apache.uima.collection.base_cpm.BaseCollectionReader#getProgress()
    */
   @Override
@@ -80,7 +92,9 @@ public class CollectionReader extends CollectionReader_ImplBase {
     return null;
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.apache.uima.collection.base_cpm.BaseCollectionReader#hasNext()
    */
   @Override

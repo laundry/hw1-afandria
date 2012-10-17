@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.text.AnnotationIndex;
@@ -91,10 +92,14 @@ public class AnnotationEvaluation extends CasConsumer_ImplBase implements CasObj
     System.out.println("F-measure: " + f);
   }
 
-  /* (non-Javadoc)
-   * @see org.apache.uima.collection.base_cpm.CasObjectProcessor#processCas(org.apache.uima.cas.CAS)
+  /**
+   * Prints out scores for sets of Gene's whose confidence are greater than DEFAULT_SCORE. Compare
+   * this with a specified gold standard.
+   * 
+   * @param aCAS
+   *          CAS
+   * @throws AnalysisEngineProcessException
    */
-  @SuppressWarnings("deprecation")
   @Override
   public void processCas(CAS aCAS) throws ResourceProcessException {
     JCas jcas;
@@ -117,19 +122,11 @@ public class AnnotationEvaluation extends CasConsumer_ImplBase implements CasObj
     Iterator<Annotation> annotationIterator = annotations.iterator();
     while (annotationIterator.hasNext()) {
       Gene g = (Gene) annotationIterator.next();
-      if (g.getConfidence() >= 3) {
-        // TODO (afandria): StringBuilders are so ugly. Is there another way?
-        StringBuilder lineBuilder = new StringBuilder();
-        lineBuilder.append(g.getIdentifier());
-        lineBuilder.append("|");
-        lineBuilder.append(g.getStart());
-        lineBuilder.append(" ");
-        lineBuilder.append(g.getEnd());
-        lineBuilder.append("|");
-        lineBuilder.append(g.getContent());
-        comparison.add(lineBuilder.toString());
+      if (g.getConfidence() >= AnnotationUtilities.THRESHOLD_SCORE) {
+        comparison.add(AnnotationUtilities.geneToString(g, false));
       }
     }
+    System.out.println(getUimaContext().getSession().toString());
     evaluatePrint(truths, comparison);
   }
 }

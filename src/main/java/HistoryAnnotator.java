@@ -24,17 +24,18 @@ public class HistoryAnnotator extends JCasAnnotator_ImplBase {
   private static boolean DEBUG = false;
 
   /**
-   * score to increase by if found in history
+   * Score to increase by if found in history
    */
-  private static int HISTORY_BONUS = 5;
+  private static int HISTORY_BONUS = 6;
 
   /**
-   * where our history is stored (default)
+   * Where our history is stored (default)
    */
   private static String DICT_PATH = "src/main/resources/data/sample.out";
 
   /**
-   * Retrieves a set of gold standard gene mentions and stores them in a set
+   * Retrieves a set of gold standard gene mentions, formatted in a specific way (sample.out), and
+   * stores them in a set
    * 
    * @return Set of strings contained by history in DICT_PATH
    * @throws AnalysisEngineProcessException
@@ -55,11 +56,13 @@ public class HistoryAnnotator extends JCasAnnotator_ImplBase {
     return dictionary;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * Goes through annotations and boosts annotation confidence based on history membership. It will
+   * boost confidence by HISTORY_BONUS.
    * 
-   * @see
-   * org.apache.uima.analysis_component.JCasAnnotator_ImplBase#process(org.apache.uima.jcas.JCas)
+   * @param arg0
+   *          JCas
+   * @throws AnalysisEngineProcessException
    */
   @Override
   public void process(JCas arg0) throws AnalysisEngineProcessException {

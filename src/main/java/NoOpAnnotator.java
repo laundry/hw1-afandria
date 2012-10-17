@@ -15,11 +15,12 @@ public class NoOpAnnotator extends JCasAnnotator_ImplBase {
    */
   private static boolean DEBUG = false;
 
-  /*
-   * (non-Javadoc)
+  /**
+   * Does nothing!!!
    * 
-   * @see
-   * org.apache.uima.analysis_component.JCasAnnotator_ImplBase#process(org.apache.uima.jcas.JCas)
+   * @param arg0
+   *          JCas
+   * @throws AnalysisEngineProcessException
    */
   @Override
   public void process(JCas arg0) throws AnalysisEngineProcessException {

@@ -4,6 +4,7 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.Iterator;
 
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.text.AnnotationIndex;
@@ -32,12 +33,14 @@ public class AnnotationPrinter extends CasConsumer_ImplBase implements CasObject
    */
   private static String OUTPUT_PATH = "src/main/resources/data/hw1.out";
 
-  /*
-   * (non-Javadoc)
+  /**
+   * Prints pipeline Gene annotations to the first of the following that work: config specified
+   * file, default file OUTPUT_PATH, standard out.
    * 
-   * @see org.apache.uima.collection.base_cpm.CasObjectProcessor#processCas(org.apache.uima.cas.CAS)
+   * @param arg0
+   *          JCas
+   * @throws AnalysisEngineProcessException
    */
-  @SuppressWarnings("deprecation")
   @Override
   public void processCas(CAS arg0) throws ResourceProcessException {
     JCas jcas;
@@ -63,25 +66,16 @@ public class AnnotationPrinter extends CasConsumer_ImplBase implements CasObject
     Iterator<Annotation> annotationIterator = annotations.iterator();
     while (annotationIterator.hasNext()) {
       Gene g = (Gene) annotationIterator.next();
-      if (g.getConfidence() >= 3) {
-        // TODO (afandria): StringBuilders are so ugly. Is there another way?
-        StringBuilder lineBuilder = new StringBuilder();
-        lineBuilder.append(g.getIdentifier());
-        lineBuilder.append("|");
-        lineBuilder.append(g.getStart());
-        lineBuilder.append(" ");
-        lineBuilder.append(g.getEnd());
-        lineBuilder.append("|");
-        lineBuilder.append(g.getContent());
-        lineBuilder.append("\n");
+      if (g.getConfidence() >= AnnotationUtilities.THRESHOLD_SCORE) {
+        String gString = AnnotationUtilities.geneToString(g, true);
         try {
-          fw.write(lineBuilder.toString());
+          fw.write(gString);
           fw.flush();
         } catch (IOException e) {
           // be quiet
         }
         if (DEBUG)
-          System.out.println(lineBuilder.toString());
+          System.out.println(gString);
       }
     }
   }

@@ -25,6 +25,12 @@ public class CmuDictAnnotator extends JCasAnnotator_ImplBase {
    */
   private static String DICT_PATH = "src/main/resources/data/cmudict.0.7a.txt";
 
+  /**
+   * Retrieves a set of words found in CMUDict
+   * 
+   * @return Set of strings contained by history in DICT_PATH
+   * @throws AnalysisEngineProcessException
+   */
   private Set<String> getDictionary() throws AnalysisEngineProcessException {
     Set<String> dictionary = new HashSet<String>();
     try {
@@ -41,11 +47,63 @@ public class CmuDictAnnotator extends JCasAnnotator_ImplBase {
     return dictionary;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * Depending on CMUDict membership + heuristics, we will either increase or decrease the
+   * confidence of the mention.
    * 
-   * @see
-   * org.apache.uima.analysis_component.JCasAnnotator_ImplBase#process(org.apache.uima.jcas.JCas)
+   * @param dictionary
+   *          CMUDict
+   * @param a
+   *          gene mention
+   */
+  private void modifyConfidence(Set<String> dictionary, Gene a) {
+    // decrement confidence if it has some invalid characters
+    if (a.getContent().contains("%") || a.getContent().contains("@")) {
+      a.setConfidence(a.getConfidence() - 3);
+    }
+    // increment confidence if it's just one letter
+    if (a.getContent().length() == 1) {
+      char x = a.getContent().toCharArray()[0];
+      if (x >= 'a' && x <= 'z') {
+        a.setConfidence(a.getConfidence() - 10);
+      } else {
+        a.setConfidence(a.getConfidence() + 1);
+      }
+      return;
+    }
+    // decrement confidence if in CMUDict
+    if (dictionary.contains(a.getContent().toUpperCase())) {
+      a.setConfidence(a.getConfidence() - 4);
+    } else {
+      if (dictionary.contains(a.getContent().split(" ")[0].toUpperCase())) {
+        // decrement confidence if first word is in CMUDict
+        a.setConfidence(a.getConfidence() - 0);
+      } else {
+        a.setConfidence(a.getConfidence() + 1);
+      }
+    }
+    // increment confidence if all words are not in CMUDict
+    String[] words = a.getContent().split(" ");
+    Collection<String> wordCollection = new Vector<String>();
+    for (int i = 0; i < words.length; i++) {
+      wordCollection.add(words[i].toUpperCase());
+    }
+    if (!dictionary.containsAll(wordCollection)) {
+      a.setConfidence(a.getConfidence() + 2);
+    } else {
+      a.setConfidence(a.getConfidence() - 1);
+    }
+    if (DEBUG)
+      System.out.println(a.getConfidence() + " " + a.getContent());
+  }
+
+  /**
+   * Goes through annotations and modifies annotation confidence based on heuristics and CMUDict
+   * membership
+   * 
+   * @param arg0
+   *          JCas
+   * @throws AnalysisEngineProcessException
    */
   @Override
   public void process(JCas arg0) throws AnalysisEngineProcessException {
@@ -60,40 +118,7 @@ public class CmuDictAnnotator extends JCasAnnotator_ImplBase {
     Iterator<Annotation> annotationIterator = annotations.iterator();
     while (annotationIterator.hasNext()) {
       Gene a = (Gene) annotationIterator.next();
-      // decrement confidence if it has some invalid characters
-      if (a.getContent().contains("%") || a.getContent().contains("@")) {
-        a.setConfidence(a.getConfidence() - 3);
-      }
-      // increment confidence if it's just one letter
-      if (a.getContent().length() == 1) {
-        a.setConfidence(a.getConfidence() + 1);
-        continue;
-      }
-      // decrement confidence if in CMUDict
-      if (dictionary.contains(a.getContent().toUpperCase())) {
-        a.setConfidence(a.getConfidence() - 2);
-      } else {
-        if (dictionary.contains(a.getContent().split(" ")[0].toUpperCase())) {
-          // decrement confidence if first word is in CMUDict
-          a.setConfidence(a.getConfidence() - 1);
-        } else {
-          a.setConfidence(a.getConfidence() + 1);
-        }
-      }
-      // increment confidence if all words are not in CMUDict
-      String[] words = a.getContent().split(" ");
-      Collection<String> wordCollection = new Vector<String>();
-      for (int i = 0; i < words.length; i++) {
-        wordCollection.add(words[i].toUpperCase());
-      }
-      if (!dictionary.containsAll(wordCollection)) {
-        a.setConfidence(a.getConfidence() + 1);
-      } else {
-        a.setConfidence(a.getConfidence() - 1);
-      }
-      if (DEBUG)
-        System.out.println(a.getConfidence() + " " + a.getContent());
+      modifyConfidence(dictionary, a);
     }
   }
-
 }
