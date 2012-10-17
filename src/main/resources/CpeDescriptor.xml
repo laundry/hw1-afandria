@@ -13,7 +13,7 @@
 			</configurationParameterSettings>
 		</collectionIterator>
 	</collectionReader>
-	<casProcessors casPoolSize="9" processingUnitThreadCount="1">
+	<casProcessors casPoolSize="11" processingUnitThreadCount="1">
 		<casProcessor deployment="integrated" name="NoOpAnnotator">
 			<descriptor>
 				<import location="NoOpAnalysisEngineDescriptor.xml" />
@@ -39,6 +39,32 @@
 				<timeout max="100000" />
 			</errorHandling>
 			<checkpoint batch="1" />
+		</casProcessor>
+		<casProcessor deployment="integrated" name="HMMAnnotator">
+			<descriptor>
+				<import location="HMMAnalysisEngineDescriptor.xml" />
+			</descriptor>
+			<filter />
+			<deploymentParameters />
+			<errorHandling>
+				<errorRateThreshold action="terminate" value="100/1000" />
+				<maxConsecutiveRestarts action="terminate" value="3" />
+				<timeout max="100000" />
+			</errorHandling>
+			<checkpoint batch="2" />
+		</casProcessor>
+		<casProcessor deployment="integrated" name="PostHMMAnnotationEvaluation">
+			<descriptor>
+				<import location="GeneAnnotationEvaluationCasConsumerDescriptor.xml" />
+			</descriptor>
+			<filter />
+			<deploymentParameters />
+			<errorHandling>
+				<errorRateThreshold action="terminate" value="100/1000" />
+				<maxConsecutiveRestarts action="terminate" value="3" />
+				<timeout max="100000" />
+			</errorHandling>
+			<checkpoint batch="2" />
 		</casProcessor>
 		<casProcessor deployment="integrated" name="NNPAnnotator">
 			<descriptor>
