@@ -11,36 +11,19 @@
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>
         <featureDescription>
-          <name>startIndex</name>
-          <description/>
-          <rangeTypeName>uima.cas.Integer</rangeTypeName>
-        </featureDescription>
-        <featureDescription>
-          <name>endIndex</name>
-          <description/>
-          <rangeTypeName>uima.cas.Integer</rangeTypeName>
-        </featureDescription>
-        <featureDescription>
           <name>content</name>
           <description/>
           <rangeTypeName>uima.cas.String</rangeTypeName>
         </featureDescription>
-      </features>
-    </typeDescription>
-    <typeDescription>
-      <name>Sentence</name>
-      <description/>
-      <supertypeName>uima.tcas.Annotation</supertypeName>
-      <features>
         <featureDescription>
           <name>identifier</name>
-          <description>Something like P00001606T0076</description>
+          <description/>
           <rangeTypeName>uima.cas.String</rangeTypeName>
         </featureDescription>
         <featureDescription>
-          <name>content</name>
-          <description>Something like "Comparison with alkaline phosphatases and 5-nucleotidase"</description>
-          <rangeTypeName>uima.cas.String</rangeTypeName>
+          <name>confidence</name>
+          <description>use this to prune out some genes</description>
+          <rangeTypeName>uima.cas.Integer</rangeTypeName>
         </featureDescription>
       </features>
     </typeDescription>

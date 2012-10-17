@@ -10,8 +10,8 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Tue Oct 16 10:58:53 EDT 2012
- * XML source: C:/scratch/eclipse_workspace/hw1-afandria/src/main/java/GeneAnnotationTypeSystemDescriptor.xml
+ * Updated by JCasGen Tue Oct 16 20:52:51 EDT 2012
+ * XML source: C:/scratch/eclipse_workspace/hw1-afandria/src/main/resources/GeneAnnotationTypeSystemDescriptor.xml
  * @generated */
 public class Gene extends Annotation {
   /** @generated
@@ -62,42 +62,6 @@ public class Gene extends Annotation {
  
     
   //*--------------*
-  //* Feature: startIndex
-
-  /** getter for startIndex - gets 
-   * @generated */
-  public int getStartIndex() {
-    if (Gene_Type.featOkTst && ((Gene_Type)jcasType).casFeat_startIndex == null)
-      jcasType.jcas.throwFeatMissing("startIndex", "Gene");
-    return jcasType.ll_cas.ll_getIntValue(addr, ((Gene_Type)jcasType).casFeatCode_startIndex);}
-    
-  /** setter for startIndex - sets  
-   * @generated */
-  public void setStartIndex(int v) {
-    if (Gene_Type.featOkTst && ((Gene_Type)jcasType).casFeat_startIndex == null)
-      jcasType.jcas.throwFeatMissing("startIndex", "Gene");
-    jcasType.ll_cas.ll_setIntValue(addr, ((Gene_Type)jcasType).casFeatCode_startIndex, v);}    
-   
-    
-  //*--------------*
-  //* Feature: endIndex
-
-  /** getter for endIndex - gets 
-   * @generated */
-  public int getEndIndex() {
-    if (Gene_Type.featOkTst && ((Gene_Type)jcasType).casFeat_endIndex == null)
-      jcasType.jcas.throwFeatMissing("endIndex", "Gene");
-    return jcasType.ll_cas.ll_getIntValue(addr, ((Gene_Type)jcasType).casFeatCode_endIndex);}
-    
-  /** setter for endIndex - sets  
-   * @generated */
-  public void setEndIndex(int v) {
-    if (Gene_Type.featOkTst && ((Gene_Type)jcasType).casFeat_endIndex == null)
-      jcasType.jcas.throwFeatMissing("endIndex", "Gene");
-    jcasType.ll_cas.ll_setIntValue(addr, ((Gene_Type)jcasType).casFeatCode_endIndex, v);}    
-   
-    
-  //*--------------*
   //* Feature: content
 
   /** getter for content - gets 
@@ -113,6 +77,42 @@ public class Gene extends Annotation {
     if (Gene_Type.featOkTst && ((Gene_Type)jcasType).casFeat_content == null)
       jcasType.jcas.throwFeatMissing("content", "Gene");
     jcasType.ll_cas.ll_setStringValue(addr, ((Gene_Type)jcasType).casFeatCode_content, v);}    
+   
+    
+  //*--------------*
+  //* Feature: identifier
+
+  /** getter for identifier - gets 
+   * @generated */
+  public String getIdentifier() {
+    if (Gene_Type.featOkTst && ((Gene_Type)jcasType).casFeat_identifier == null)
+      jcasType.jcas.throwFeatMissing("identifier", "Gene");
+    return jcasType.ll_cas.ll_getStringValue(addr, ((Gene_Type)jcasType).casFeatCode_identifier);}
+    
+  /** setter for identifier - sets  
+   * @generated */
+  public void setIdentifier(String v) {
+    if (Gene_Type.featOkTst && ((Gene_Type)jcasType).casFeat_identifier == null)
+      jcasType.jcas.throwFeatMissing("identifier", "Gene");
+    jcasType.ll_cas.ll_setStringValue(addr, ((Gene_Type)jcasType).casFeatCode_identifier, v);}    
+   
+    
+  //*--------------*
+  //* Feature: confidence
+
+  /** getter for confidence - gets use this to prune out some genes
+   * @generated */
+  public int getConfidence() {
+    if (Gene_Type.featOkTst && ((Gene_Type)jcasType).casFeat_confidence == null)
+      jcasType.jcas.throwFeatMissing("confidence", "Gene");
+    return jcasType.ll_cas.ll_getIntValue(addr, ((Gene_Type)jcasType).casFeatCode_confidence);}
+    
+  /** setter for confidence - sets use this to prune out some genes 
+   * @generated */
+  public void setConfidence(int v) {
+    if (Gene_Type.featOkTst && ((Gene_Type)jcasType).casFeat_confidence == null)
+      jcasType.jcas.throwFeatMissing("confidence", "Gene");
+    jcasType.ll_cas.ll_setIntValue(addr, ((Gene_Type)jcasType).casFeatCode_confidence, v);}    
   }
 
     

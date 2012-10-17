@@ -13,7 +13,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Tue Oct 16 10:58:53 EDT 2012
+ * Updated by JCasGen Tue Oct 16 20:52:51 EDT 2012
  * @generated */
 public class Gene_Type extends Annotation_Type {
   /** @generated */
@@ -44,42 +44,6 @@ public class Gene_Type extends Annotation_Type {
   public final static boolean featOkTst = JCasRegistry.getFeatOkTst("Gene");
  
   /** @generated */
-  final Feature casFeat_startIndex;
-  /** @generated */
-  final int     casFeatCode_startIndex;
-  /** @generated */ 
-  public int getStartIndex(int addr) {
-        if (featOkTst && casFeat_startIndex == null)
-      jcas.throwFeatMissing("startIndex", "Gene");
-    return ll_cas.ll_getIntValue(addr, casFeatCode_startIndex);
-  }
-  /** @generated */    
-  public void setStartIndex(int addr, int v) {
-        if (featOkTst && casFeat_startIndex == null)
-      jcas.throwFeatMissing("startIndex", "Gene");
-    ll_cas.ll_setIntValue(addr, casFeatCode_startIndex, v);}
-    
-  
- 
-  /** @generated */
-  final Feature casFeat_endIndex;
-  /** @generated */
-  final int     casFeatCode_endIndex;
-  /** @generated */ 
-  public int getEndIndex(int addr) {
-        if (featOkTst && casFeat_endIndex == null)
-      jcas.throwFeatMissing("endIndex", "Gene");
-    return ll_cas.ll_getIntValue(addr, casFeatCode_endIndex);
-  }
-  /** @generated */    
-  public void setEndIndex(int addr, int v) {
-        if (featOkTst && casFeat_endIndex == null)
-      jcas.throwFeatMissing("endIndex", "Gene");
-    ll_cas.ll_setIntValue(addr, casFeatCode_endIndex, v);}
-    
-  
- 
-  /** @generated */
   final Feature casFeat_content;
   /** @generated */
   final int     casFeatCode_content;
@@ -96,6 +60,42 @@ public class Gene_Type extends Annotation_Type {
     ll_cas.ll_setStringValue(addr, casFeatCode_content, v);}
     
   
+ 
+  /** @generated */
+  final Feature casFeat_identifier;
+  /** @generated */
+  final int     casFeatCode_identifier;
+  /** @generated */ 
+  public String getIdentifier(int addr) {
+        if (featOkTst && casFeat_identifier == null)
+      jcas.throwFeatMissing("identifier", "Gene");
+    return ll_cas.ll_getStringValue(addr, casFeatCode_identifier);
+  }
+  /** @generated */    
+  public void setIdentifier(int addr, String v) {
+        if (featOkTst && casFeat_identifier == null)
+      jcas.throwFeatMissing("identifier", "Gene");
+    ll_cas.ll_setStringValue(addr, casFeatCode_identifier, v);}
+    
+  
+ 
+  /** @generated */
+  final Feature casFeat_confidence;
+  /** @generated */
+  final int     casFeatCode_confidence;
+  /** @generated */ 
+  public int getConfidence(int addr) {
+        if (featOkTst && casFeat_confidence == null)
+      jcas.throwFeatMissing("confidence", "Gene");
+    return ll_cas.ll_getIntValue(addr, casFeatCode_confidence);
+  }
+  /** @generated */    
+  public void setConfidence(int addr, int v) {
+        if (featOkTst && casFeat_confidence == null)
+      jcas.throwFeatMissing("confidence", "Gene");
+    ll_cas.ll_setIntValue(addr, casFeatCode_confidence, v);}
+    
+  
 
 
 
@@ -106,16 +106,16 @@ public class Gene_Type extends Annotation_Type {
     casImpl.getFSClassRegistry().addGeneratorForType((TypeImpl)this.casType, getFSGenerator());
 
  
-    casFeat_startIndex = jcas.getRequiredFeatureDE(casType, "startIndex", "uima.cas.Integer", featOkTst);
-    casFeatCode_startIndex  = (null == casFeat_startIndex) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_startIndex).getCode();
-
- 
-    casFeat_endIndex = jcas.getRequiredFeatureDE(casType, "endIndex", "uima.cas.Integer", featOkTst);
-    casFeatCode_endIndex  = (null == casFeat_endIndex) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_endIndex).getCode();
-
- 
     casFeat_content = jcas.getRequiredFeatureDE(casType, "content", "uima.cas.String", featOkTst);
     casFeatCode_content  = (null == casFeat_content) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_content).getCode();
+
+ 
+    casFeat_identifier = jcas.getRequiredFeatureDE(casType, "identifier", "uima.cas.String", featOkTst);
+    casFeatCode_identifier  = (null == casFeat_identifier) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_identifier).getCode();
+
+ 
+    casFeat_confidence = jcas.getRequiredFeatureDE(casType, "confidence", "uima.cas.Integer", featOkTst);
+    casFeatCode_confidence  = (null == casFeat_confidence) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_confidence).getCode();
 
   }
 }

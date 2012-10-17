@@ -7,7 +7,7 @@ public class NoOpAnnotator extends JCasAnnotator_ImplBase {
   @Override
   public void process(JCas arg0) throws AnalysisEngineProcessException {
     String docText = arg0.getDocumentText();
-    System.out.println(docText);
+    System.out.println("No op!");
   }
 
 }

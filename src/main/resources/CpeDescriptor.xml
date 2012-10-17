@@ -13,10 +13,36 @@
 			</configurationParameterSettings>
 		</collectionIterator>
 	</collectionReader>
-	<casProcessors casPoolSize="1" processingUnitThreadCount="1">
+	<casProcessors casPoolSize="3" processingUnitThreadCount="2">
 		<casProcessor deployment="integrated" name="NoOpAnnotator">
 			<descriptor>
 				<import location="NoOpAnalysisEngineDescriptor.xml" />
+			</descriptor>
+			<filter />
+			<deploymentParameters />
+			<errorHandling>
+				<errorRateThreshold action="terminate" value="100/1000" />
+				<maxConsecutiveRestarts action="terminate" value="3" />
+				<timeout max="100000" />
+			</errorHandling>
+			<checkpoint batch="9001" />
+		</casProcessor>
+		<casProcessor deployment="integrated" name="NNPAnnotator">
+			<descriptor>
+				<import location="NNPAnalysisEngineDescriptor.xml" />
+			</descriptor>
+			<filter />
+			<deploymentParameters />
+			<errorHandling>
+				<errorRateThreshold action="terminate" value="100/1000" />
+				<maxConsecutiveRestarts action="terminate" value="3" />
+				<timeout max="100000" />
+			</errorHandling>
+			<checkpoint batch="9001" />
+		</casProcessor>
+		<casProcessor deployment="integrated" name="CmuDictAnnotator">
+			<descriptor>
+				<import location="CmuDictAnalysisEngineDescriptor.xml" />
 			</descriptor>
 			<filter />
 			<deploymentParameters />

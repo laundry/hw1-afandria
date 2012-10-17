@@ -27,12 +27,13 @@ public class CollectionReader extends CollectionReader_ImplBase {
     try {
       jcas = arg0.getJCas();
       fp = (String)getConfigParameterValue("InputFilePath");
+      // TODO get actual config
+      if (fp == null) fp = "src/main/resources/data/hw1.in";
     } catch (CASException e) {
       throw new CollectionException();
     }
     
-    //File f = new File(fp);
-    File f = new File("C:\\scratch\\eclipse_workspace\\hw1-afandria\\src\\main\\resources\\data\\sample.in");
+    File f = new File(fp);
     jcas.setDocumentText(FileUtils.file2String(f, "UTF-8"));
     read = true;
 
@@ -40,8 +41,7 @@ public class CollectionReader extends CollectionReader_ImplBase {
 
   @Override
   public void close() throws IOException {
-    // TODO Auto-generated method stub
-    System.out.println("ASDF");
+    System.out.println("closing");
   }
 
   @Override
