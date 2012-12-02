@@ -8,7 +8,7 @@
 			<configurationParameterSettings>
 				<nameValuePair>
 					<name>InputFilePath</name>
-					<value><string>"C:\scratch\eclipse_workspace\hw1-afandria\src\main\resources\data\sample.in"</string></value>
+					<value><string>"data/sample.in"</string></value>
 				</nameValuePair>
 			</configurationParameterSettings>
 		</collectionIterator>

@@ -1,5 +1,7 @@
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Scanner;
 
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
@@ -31,7 +33,7 @@ public class CollectionReader extends CollectionReader_ImplBase {
   /**
    * This is where our inputs lie (default)
    */
-  private static String INPUT_PATH = "src/main/resources/data/hw1.in";
+  private static String INPUT_PATH = "data/hw1.in";
 
   /*
    * (non-Javadoc)
@@ -64,8 +66,9 @@ public class CollectionReader extends CollectionReader_ImplBase {
     String fp = (String) getConfigParameterValue("InputFilePath");
     if (fp == null)
       fp = INPUT_PATH;
-    File f = new File(fp);
-    jcas.setDocumentText(FileUtils.file2String(f, "UTF-8"));
+    InputStream stream = CollectionReader.class.getResourceAsStream(INPUT_PATH);
+    String document = new Scanner(stream, "UTF-8").useDelimiter("\\A").next();
+    jcas.setDocumentText(document);
     read = true;
 
   }

@@ -1,7 +1,12 @@
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.Set;
 
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
@@ -33,7 +38,7 @@ public class HMMAnnotator extends JCasAnnotator_ImplBase {
   /**
    * Where our history is stored (default)
    */
-  private static String HMM_MODEL_PATH = "src/main/resources/data/ne-en-bio-genetag.HmmChunker";
+  private static String HMM_MODEL_PATH = "data/ne-en-bio-genetag.HmmChunker";
 
   /**
    * Get a LingPipe chunker
@@ -42,10 +47,10 @@ public class HMMAnnotator extends JCasAnnotator_ImplBase {
    * @throws IOException
    * @throws ClassNotFoundException
    */
-  private Chunker getChunker() throws IOException, ClassNotFoundException {
-    // TODO get actual config
-    String fp = HMM_MODEL_PATH;
-    File f = new File(fp);
+  private Chunker getChunker() throws URISyntaxException, IOException, ClassNotFoundException {
+    URI uri;
+    uri = new URI(HMMAnnotator.class.getResource(HMM_MODEL_PATH).toString());
+    File f = new File(uri);
     Chunker chunker = (Chunker) AbstractExternalizable.readObject(f);
     return chunker;
   }

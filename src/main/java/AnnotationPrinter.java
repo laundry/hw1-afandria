@@ -2,6 +2,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Iterator;
 
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
@@ -31,7 +33,7 @@ public class AnnotationPrinter extends CasConsumer_ImplBase implements CasObject
   /**
    * This is where we will write our output (default)
    */
-  private static String OUTPUT_PATH = "src/main/resources/data/hw1.out";
+  private static String OUTPUT_PATH = "data/hw1.out";
 
   /**
    * Prints pipeline Gene annotations to the first of the following that work: config specified
@@ -52,31 +54,30 @@ public class AnnotationPrinter extends CasConsumer_ImplBase implements CasObject
     // TODO get actual config
     String fp = (String) getConfigParameterValue("OutputFilePath");
     if (fp == null)
-      fp = OUTPUT_PATH;
-    Writer fw = new OutputStreamWriter(System.out);
+      fp = AnnotationPrinter.class.getResource(OUTPUT_PATH).toString();
     try {
+      Writer fw;
       fw = new FileWriter(fp);
+      // get annotations
+      AnnotationIndex<Annotation> annotations = jcas.getAnnotationIndex(Gene.type);
+      Iterator<Annotation> annotationIterator = annotations.iterator();
+      while (annotationIterator.hasNext()) {
+        Gene g = (Gene) annotationIterator.next();
+        if (g.getConfidence() >= AnnotationUtilities.THRESHOLD_SCORE) {
+          String gString = AnnotationUtilities.geneToString(g, true);
+          try {
+            fw.write(gString);
+            fw.flush();
+          } catch (IOException e) {
+            // be quiet
+          }
+          if (DEBUG)
+            System.out.println(gString);
+        }
+      }
+      fw.close();
     } catch (IOException e) {
       e.printStackTrace();
-      // TODO (afandria): is this necessary?
-      fw = new OutputStreamWriter(System.out);
-    }
-    // get annotations
-    AnnotationIndex<Annotation> annotations = jcas.getAnnotationIndex(Gene.type);
-    Iterator<Annotation> annotationIterator = annotations.iterator();
-    while (annotationIterator.hasNext()) {
-      Gene g = (Gene) annotationIterator.next();
-      if (g.getConfidence() >= AnnotationUtilities.THRESHOLD_SCORE) {
-        String gString = AnnotationUtilities.geneToString(g, true);
-        try {
-          fw.write(gString);
-          fw.flush();
-        } catch (IOException e) {
-          // be quiet
-        }
-        if (DEBUG)
-          System.out.println(gString);
-      }
     }
   }
 }

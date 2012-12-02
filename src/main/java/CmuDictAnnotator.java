@@ -1,8 +1,9 @@
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.Vector;
 
@@ -11,7 +12,6 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.apache.uima.util.FileUtils;
 
 public class CmuDictAnnotator extends JCasAnnotator_ImplBase {
 
@@ -23,7 +23,7 @@ public class CmuDictAnnotator extends JCasAnnotator_ImplBase {
   /**
    * This is where CMUDict is (default)
    */
-  private static String DICT_PATH = "src/main/resources/data/cmudict.0.7a.txt";
+  private static String DICT_PATH = "data/cmudict.0.7a.txt";
 
   /**
    * Retrieves a set of words found in CMUDict
@@ -33,16 +33,13 @@ public class CmuDictAnnotator extends JCasAnnotator_ImplBase {
    */
   private Set<String> getDictionary() throws AnalysisEngineProcessException {
     Set<String> dictionary = new HashSet<String>();
-    try {
-      String[] lines = FileUtils.file2String(new File(DICT_PATH)).split("\\n");
-      for (int i = 0; i < lines.length; i++) {
-        if (lines[i].indexOf(";") != 0) {
-          dictionary.add(lines[i].substring(0, lines[i].indexOf(" ")));
-        }
+    InputStream stream = CmuDictAnnotator.class.getResourceAsStream(DICT_PATH);
+    String document = new Scanner(stream, "UTF-8").useDelimiter("\\A").next();
+    String[] lines = document.split("\\n");
+    for (int i = 0; i < lines.length; i++) {
+      if (lines[i].indexOf(";") != 0) {
+        dictionary.add(lines[i].substring(0, lines[i].indexOf(" ")));
       }
-    } catch (IOException e) {
-      e.printStackTrace();
-      throw new AnalysisEngineProcessException();
     }
     return dictionary;
   }

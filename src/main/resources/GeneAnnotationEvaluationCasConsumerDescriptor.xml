@@ -9,7 +9,7 @@
     <vendor/>
     <configurationParameters>
       <configurationParameter>
-        <name>InputFilePath</name>
+        <name>TruthFilePath</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>

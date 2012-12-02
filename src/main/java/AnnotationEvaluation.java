@@ -1,9 +1,13 @@
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.Scanner;
 
+import org.apache.axis.utils.IOUtils;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
@@ -25,7 +29,7 @@ public class AnnotationEvaluation extends CasConsumer_ImplBase implements CasObj
   /**
    * This is where our truths lie (default)
    */
-  private static String TRUTH_PATH = "src/main/resources/data/sample.out";
+  private static String TRUTH_PATH = "data/sample.out";
 
   /**
    * Create set of strings that are our gold standard
@@ -39,8 +43,8 @@ public class AnnotationEvaluation extends CasConsumer_ImplBase implements CasObj
     String fp = (String) getConfigParameterValue("TruthFilePath");
     if (fp == null)
       fp = TRUTH_PATH;
-    File f = new File(fp);
-    String document = FileUtils.file2String(f, "UTF-8");
+    InputStream stream = AnnotationEvaluation.class.getResourceAsStream(fp);
+    String document = new Scanner(stream, "UTF-8").useDelimiter("\\A").next();
     String[] lines = document.split("\\n");
     for (int i = 0; i < lines.length; i++) {
       truths.add(lines[i]);

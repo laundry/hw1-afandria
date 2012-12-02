@@ -1,7 +1,9 @@
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Scanner;
 import java.util.Set;
 
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
@@ -31,7 +33,7 @@ public class HistoryAnnotator extends JCasAnnotator_ImplBase {
   /**
    * Where our history is stored (default)
    */
-  private static String DICT_PATH = "src/main/resources/data/sample.out";
+  private static String DICT_PATH = "data/sample.out";
 
   /**
    * Retrieves a set of gold standard gene mentions, formatted in a specific way (sample.out), and
@@ -42,16 +44,13 @@ public class HistoryAnnotator extends JCasAnnotator_ImplBase {
    */
   private Set<String> getDictionary() throws AnalysisEngineProcessException {
     Set<String> dictionary = new HashSet<String>();
-    try {
-      String[] lines = FileUtils.file2String(new File(DICT_PATH)).split("\\n");
-      for (int i = 0; i < lines.length; i++) {
-        if (lines[i].indexOf(";") != 0) {
-          dictionary.add(lines[i].split("|")[3]);
-        }
+    InputStream stream = HistoryAnnotator.class.getResourceAsStream(DICT_PATH);
+    String document = new Scanner(stream, "UTF-8").useDelimiter("\\A").next();
+    String[] lines = document.split("\\n");
+    for (int i = 0; i < lines.length; i++) {
+      if (lines[i].indexOf(";") != 0) {
+        dictionary.add(lines[i].split("|")[3]);
       }
-    } catch (IOException e) {
-      e.printStackTrace();
-      throw new AnalysisEngineProcessException();
     }
     return dictionary;
   }
