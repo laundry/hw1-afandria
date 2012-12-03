@@ -33,7 +33,7 @@ public class AnnotationPrinter extends CasConsumer_ImplBase implements CasObject
   /**
    * This is where we will write our output (default)
    */
-  private static String OUTPUT_PATH = "hw1.out";
+  private static String OUTPUT_PATH = "hw1-afandria.out";
 
   /**
    * Prints pipeline Gene annotations to the first of the following that work: config specified
