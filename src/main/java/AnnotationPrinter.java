@@ -33,7 +33,7 @@ public class AnnotationPrinter extends CasConsumer_ImplBase implements CasObject
   /**
    * This is where we will write our output (default)
    */
-  private static String OUTPUT_PATH = "data/hw1.out";
+  private static String OUTPUT_PATH = "hw1.out";
 
   /**
    * Prints pipeline Gene annotations to the first of the following that work: config specified
@@ -54,7 +54,10 @@ public class AnnotationPrinter extends CasConsumer_ImplBase implements CasObject
     // TODO get actual config
     String fp = (String) getConfigParameterValue("OutputFilePath");
     if (fp == null)
-      fp = AnnotationPrinter.class.getResource(OUTPUT_PATH).toString();
+    {
+      fp = OUTPUT_PATH;
+      //fp = AnnotationPrinter.class.getResource(OUTPUT_PATH).toString();
+    }
     try {
       Writer fw;
       fw = new FileWriter(fp);
